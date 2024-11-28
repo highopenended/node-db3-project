@@ -1,3 +1,10 @@
+
+
+const Schemes = require('./scheme-model.js')
+
+
+
+
 /*
   If `scheme_id` does not exist in the database:
 
@@ -6,8 +13,20 @@
     "message": "scheme with scheme_id <actual id> not found"
   }
 */
-const checkSchemeId = (req, res, next) => {
-
+const checkSchemeId = async (req, res, next) => {
+  const id = req.params.scheme_id  
+  try{
+    const scheme=await Schemes.findById(id)
+    if(scheme===null){      
+      return res.status(404).json({ message:`scheme with scheme_id ${id} not found`})
+    }else{
+      next()
+    }
+  }catch(err){
+    return res.status(404).json({
+      message:`scheme with scheme_id ${id} not found`
+    })
+  }
 }
 
 /*
@@ -19,7 +38,7 @@ const checkSchemeId = (req, res, next) => {
   }
 */
 const validateScheme = (req, res, next) => {
-
+  console.log(req.body  )
 }
 
 /*
